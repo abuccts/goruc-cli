@@ -1,9 +1,10 @@
-# go.ruc CLI
+# [GORUC](http://go.ruc.edu.cn) CLI
 
 command line interface to login go.ruc.edu.cn
 
-
 ## Usage
-	goruc -i	*login*
-	goruc -o	*logout*
-	goruc -h	*help*
+| Command  | Description |
+| ------------- | ------------- |
+| `goruc -i`  | login  |
+| `goruc -o`  | logout  |
+| `goruc -h`  | help  |
