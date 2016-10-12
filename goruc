@@ -1,0 +1,59 @@
+#!/bin/bash
+
+
+oneline_usage="$0 [-ioh]"
+
+usage()
+{
+	cat	<<-USAGEEOF
+			Usage: $oneline_usage
+			Try "$0 -h" for more information.
+		USAGEEOF
+	exit 1
+}
+
+help()
+{
+	cat <<-HELPEOF
+			Usage: $oneline_usage
+			
+			Options:
+			-i    login
+			-o    logout
+			-h    help
+		HELPEOF
+	exit 0
+}
+
+if [ $# -eq 0 ]
+then
+	usage
+fi
+
+while getopts "ioh" OPTION
+do
+	case $OPTION in
+	i)
+		if [ ! -a COOKIE ]
+		then
+			response=$(curl -s -c COOKIE -L http://10.12.16.126:801/eportal/index.php)
+		fi
+		read -p "Username: " username
+		read -p "Password: " -s password
+		echo
+		response=$(curl -s -b COOKIE -L http://10.12.16.122 -d "DDDDD=$username&upass=$password&0MKKey=123456&R6=0")
+		echo $response
+		response=$(curl -s -b COOKIE -L http://10.12.16.126:801/eportal/ruc/index.php -d "UID=$username&password=&is_lack=0")
+		echo $response
+		;;
+	o)
+		echo "TODO..."
+		;;
+	h)
+		help
+		;;
+	*)
+		usage
+		;;
+	esac
+done
