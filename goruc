@@ -1,7 +1,8 @@
 #!/bin/bash
 
-
-oneline_usage="$0 [-ioh]"
+oneline_usage="$0 [options]"
+login_addr="http://10.12.16.122"
+jump_addr="http://10.12.16.126:801"
 
 usage()
 {
@@ -9,7 +10,7 @@ usage()
 			Usage: $oneline_usage
 			Try "$0 -h" for more information.
 		USAGEEOF
-	exit 1
+	exit 2
 }
 
 help()
@@ -17,7 +18,7 @@ help()
 	cat <<-HELPEOF
 			Usage: $oneline_usage
 			
-			Options:
+			options:
 			-i    login
 			-o    logout
 			-h    help
@@ -25,29 +26,64 @@ help()
 	exit 0
 }
 
+err()
+{
+	echo $@
+	exit 1
+}
+
 if [ $# -eq 0 ]
 then
 	usage
 fi
 
-while getopts "ioh" OPTION
+while getopts "ioh" opt
 do
-	case $OPTION in
+	case $opt in
 	i)
-		if [ ! -a COOKIE ]
+		if [ ! -f COOKIE ]
 		then
-			response=$(curl -s -c COOKIE -L http://10.12.16.126:801/eportal/index.php)
+			response=$(curl -s -c COOKIE -L $jump_addr/eportal/index.php)
 		fi
 		read -p "Username: " username
 		read -p "Password: " -s password
 		echo
-		response=$(curl -s -b COOKIE -L http://10.12.16.122 -d "DDDDD=$username&upass=$password&0MKKey=123456&R6=0")
-		echo $response
-		response=$(curl -s -b COOKIE -L http://10.12.16.126:801/eportal/ruc/index.php -d "UID=$username&password=&is_lack=0")
-		echo $response
+		response=$(curl -s -b COOKIE -L $login_addr -d "DDDDD=$username&upass=$password&0MKKey=123456&R6=0")
+		if [[ $response =~ "successfully logged into" ]]
+		then
+			echo ">> Succeed!"
+		else
+			err ">> Authentication failed, wrong username or password."
+		fi
+		response=$(curl -s -b COOKIE -L $jump_addr/eportal/ruc/index.php -d "UID=$username&password=&is_lack=0")
+		if [[ $response =~ "php/RucSetting.php" ]]
+		then
+			echo ">> You can connect to internet now :)"
+		else
+			err ">> An error occured :("
+		fi
+		exit 0
 		;;
 	o)
-		echo "TODO..."
+		if [ ! -f COOKIE ]
+		then
+			err ">> COOKIE missed, please login first."
+		fi
+		response=$(curl -s -b COOKIE -L $jump_addr/eportal/ruc/php/get_user_device.php)
+		if ! [[ $response =~ "\"result\":\"ok\"" ]]
+		then
+			err ">> You're not online or the session expired, please login first."
+		fi
+		sid=$(echo $response | grep -Po '"online_session":.*?[^\\]",' | head -n 1 | grep -o -E '[0-9]+' | head -n 1)
+		echo $sid
+		response=$(curl -s -b COOKIE -L $jump_addr/eportal/ruc/php/offline_device.php -d "is_auto_login=0&device_list=1|$sid")
+		if [[ $response =~ "\"result\":\"ok\"" ]]
+		then
+			echo ">> Logged out successfully."
+		else
+			err ">> Unknown error."
+		fi
+		exit 0
 		;;
 	h)
 		help
