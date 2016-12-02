@@ -1,0 +1,15 @@
+---
+engines:
+  duplication:
+    enabled: true
+    config:
+      languages:
+      - shell
+  fixme:
+    enabled: true
+  shellcheck:
+    enabled: true
+ratings:
+  paths:
+  - "goruc"
+exclude_paths: []
