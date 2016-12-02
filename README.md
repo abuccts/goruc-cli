@@ -1,8 +1,9 @@
-[![GitHub version](https://badge.fury.io/gh/abuccts%2Fgoruc.svg)](https://badge.fury.io/gh/abuccts%2Fgoruc)
-[![GPLv3 licensed](https://img.shields.io/badge/license-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0-standalone.html)
-
 [GORUC](http://go.ruc.edu.cn) CLI
 =================================
+
+[![Code Climate](https://codeclimate.com/github/abuccts/goruc/badges/gpa.svg)](https://codeclimate.com/github/abuccts/goruc)
+[![GitHub version](https://badge.fury.io/gh/abuccts%2Fgoruc.svg)](https://badge.fury.io/gh/abuccts%2Fgoruc)
+[![GPLv3 licensed](https://img.shields.io/badge/license-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0-standalone.html)
 
 * This application is licensed under [GNU General Public License, Version 3.0](https://www.gnu.org/licenses/gpl-3.0-standalone.html)
 
