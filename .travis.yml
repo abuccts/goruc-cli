@@ -1,0 +1,19 @@
+language: bash
+
+sudo: false
+
+addons:
+  apt:
+    sources:
+    - debian-sid
+    packages:
+    - shellcheck
+
+script:
+  - shellcheck goruc
+
+notifications:
+  email: false
+
+matrix:
+  fast_finish: true
