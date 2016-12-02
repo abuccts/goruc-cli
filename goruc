@@ -69,7 +69,7 @@ help() {
 }
 
 err() {
-  echo $@
+  echo "$@"
   exit 1
 }
 
@@ -81,27 +81,27 @@ if [ $# -eq 0 ]; then
   usage
 fi
 
-if [ ! -d $DIR ]; then
+if [ ! -d "$DIR" ]; then
   err ">> Doesn't find $DIR!"
 fi
 
 while getopts "ioh" opt; do
   case $opt in
     i)
-      if [ ! -f $COOKIE ]; then
-        response=$(curl -s -c $COOKIE -L $jump_addr/eportal/index.php)
+      if [ ! -f "$COOKIE" ]; then
+        response=$(curl -s -c "$COOKIE" -L "$jump_addr"/eportal/index.php)
       fi
-      read -p "Username: " username
-      read -p "Password: " -s password
+      read -rp "Username: " username
+      read -rp "Password: " -s password
       echo
-      response=$(curl -s -b $COOKIE -L $login_addr -d "DDDDD=$username&upass=$password&0MKKey=123456&R6=0")
-      if [[ $response =~ "successfully logged into" ]]; then
+      response=$(curl -s -b "$COOKIE" -L "$login_addr" -d "DDDDD=$username&upass=$password&0MKKey=123456&R6=0")
+      if [[ $response == *"successfully logged into"* ]]; then
         echo ">> Succeed!"
       else
         err ">> Authentication failed, wrong username or password."
       fi
-      response=$(curl -s -b $COOKIE -L $jump_addr/eportal/ruc/index.php -d "UID=$username&password=&is_lack=0")
-      if [[ $response =~ "php/RucSetting.php" ]]; then
+      response=$(curl -s -b "$COOKIE" -L "$jump_addr"/eportal/ruc/index.php -d "UID=$username&password=&is_lack=0")
+      if [[ $response == *"php/RucSetting.php"* ]]; then
         echo ">> You can connect to internet now :)"
       else
         err ">> An error occured :("
@@ -109,16 +109,16 @@ while getopts "ioh" opt; do
       exit 0
       ;;
     o)
-      if [ ! -f $COOKIE ]; then
+      if [ ! -f "$COOKIE" ]; then
         err ">> COOKIE missed, please login first."
       fi
-      response=$(curl -s -b $COOKIE -L $jump_addr/eportal/ruc/php/get_user_device.php)
-      if ! [[ $response =~ "\"result\":\"ok\"" ]]; then
+      response=$(curl -s -b "$COOKIE" -L "$jump_addr"/eportal/ruc/php/get_user_device.php)
+      if ! [[ $response == *"\"result\":\"ok\""* ]]; then
         err ">> You're not online or the session expired, please login first."
       fi
-      sid=$(echo $response | grep -Po '"online_session":.*?[^\\]",' | head -n 1 | grep -o -E '[0-9]+' | head -n 1)
-      response=$(curl -s -b $COOKIE -L $jump_addr/eportal/ruc/php/offline_device.php -d "is_auto_login=0&device_list=1|$sid")
-      if [[ $response =~ "\"result\":\"ok\"" ]]; then
+      sid=$(echo "$response" | grep -Po '"online_session":.*?[^\\]",' | head -n 1 | grep -o -E '[0-9]+' | head -n 1)
+      response=$(curl -s -b "$COOKIE" -L "$jump_addr"/eportal/ruc/php/offline_device.php -d "is_auto_login=0&device_list=1|$sid")
+      if [[ $response == *"\"result\":\"ok\""* ]]; then
         echo ">> Logged out successfully."
       else
         err ">> Unknown error."
