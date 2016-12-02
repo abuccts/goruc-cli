@@ -20,9 +20,27 @@
 # along with goruc.  If not, see <http://www.gnu.org/licenses/>.
 
 
+# ------------------------------------------------------------
+# Setup Environment
+# ------------------------------------------------------------
+
+# General config
+readonly DIR="$(dirname "$(readlink -f "$0" || realpath "$0")")"
+readonly COOKIE="$DIR/COOKIE"
+readonly SYSTEM="$(uname)"
+readonly VERSION='0.1.0'
+
+# ------------------------------------------------------------
+# Defaults
+# ------------------------------------------------------------
+
 oneline_usage="$0 [options]"
 login_addr="http://10.12.16.122"
 jump_addr="http://10.12.16.126:801"
+
+# ------------------------------------------------------------
+# Functions
+# ------------------------------------------------------------
 
 usage() {
   cat  <<-USAGEEOF
@@ -34,12 +52,18 @@ usage() {
 
 help() {
   cat  <<-HELPEOF
-	Usage: $oneline_usage
-
-	options:
-	-i    login
-	-o    logout
-	-h    help
+	
+	USAGE
+	    $oneline_usage
+	
+	OPTIONS
+	    -i    login
+	    -o    logout
+	    -h    help
+	
+	VERSION
+	    $VERSION
+	
 	HELPEOF
   exit 0
 }
@@ -49,12 +73,14 @@ err() {
   exit 1
 }
 
+# ------------------------------------------------------------
+# Main
+# ------------------------------------------------------------
+
 if [ $# -eq 0 ]; then
   usage
 fi
 
-DIR="$(dirname "$(readlink -f "$0" || realpath "$0")")"
-COOKIE="$DIR/COOKIE"
 if [ ! -d $DIR ]; then
   err ">> Doesn't find $DIR!"
 fi
