@@ -1,27 +1,27 @@
 [GORUC](http://go.ruc.edu.cn) CLI
 =================================
 
-[![Build Status](https://travis-ci.org/abuccts/goruc.svg?branch=master)](https://travis-ci.org/abuccts/goruc)
-[![Code Climate](https://codeclimate.com/github/abuccts/goruc/badges/gpa.svg)](https://codeclimate.com/github/abuccts/goruc)
-[![GitHub version](https://badge.fury.io/gh/abuccts%2Fgoruc.svg)](https://badge.fury.io/gh/abuccts%2Fgoruc)
+[![Build Status](https://travis-ci.org/abuccts/goruc-cli.svg?branch=master)](https://travis-ci.org/abuccts/goruc-cli)
+[![Code Climate](https://codeclimate.com/github/abuccts/goruc-cli/badges/gpa.svg)](https://codeclimate.com/github/abuccts/goruc-cli)
+[![GitHub version](https://badge.fury.io/gh/abuccts%2Fgoruc-cli.svg)](https://badge.fury.io/gh/abuccts%2Fgoruc-cli)
 [![GPLv3 licensed](https://img.shields.io/badge/license-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0-standalone.html)
 
 Summary
 -------
 
-Command line interface to login *go.ruc.edu.cn*
+Command line interface for *go.ruc.edu.cn* login/logout
 
 Issues
 ------
 
-* Use [goruc issues on GitHub](https://github.com/abuccts/goruc/issues) for open issues
+* Use [goruc-cli issues on GitHub](https://github.com/abuccts/goruc-cli/issues) for open issues
 
 Installing
 ----------
 
 ``` sh
-$ git clone https://github.com/abuccts/goruc.git
-$ cd goruc
+$ git clone https://github.com/abuccts/goruc-cli.git
+$ cd goruc-cli
 $ chmod u+x goruc
 $ sudo ln -s "$(pwd)"/goruc /usr/local/bin
 ```
